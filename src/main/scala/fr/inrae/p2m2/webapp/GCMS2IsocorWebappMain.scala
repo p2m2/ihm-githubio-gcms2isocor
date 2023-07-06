@@ -1,0 +1,77 @@
+package fr.inrae.p2m2.webapp
+
+//import fr.inrae.metabolomics.p2m2.converter.GCMSOutputFiles2IsocorInput
+import fr.inrae.metabolomics.p2m2.format.ms.GCMS
+import fr.inrae.metabolomics.p2m2.parser.GCMSParser.{parseHeader, parseMSQuantitativeResults}
+import org.scalajs.dom
+import org.scalajs.dom.html.Input
+import org.scalajs.dom.{FileReader, HTMLInputElement}
+import scalatags.JsDom
+import scalatags.JsDom.all._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future.never.onComplete
+import scala.concurrent.{ExecutionContext, Future, Promise}
+import scala.util.{Failure, Success}
+
+object GCMS2IsocorWebappMain {
+
+
+  def readFileAsText (file : dom.File) (implicit ec: ExecutionContext) : Future[String] = {
+    val p = Promise[String]()
+      val fr = new FileReader()
+
+    fr.onload = _ => {
+        p.success(fr.result.toString)
+    }
+
+      fr.onerror = _ => {
+        p.failure(new Exception())
+      }
+
+    fr.readAsText(file)
+    p.future
+  }
+
+def main(args: Array[String]): Unit = {
+  val inputTag: JsDom.TypedTag[Input] = input(
+    id := "inputFiles",
+    `type` := "file",
+    multiple := "multiple",
+    onchange := {
+      (ev : dom.InputEvent) =>
+        val files = ev.currentTarget.asInstanceOf[HTMLInputElement].files
+        //alert(contentRules)
+        if (files.nonEmpty) {
+
+          val resolution : Int = 2000
+          val separator: String = "_"
+          val verbose: Boolean = false
+          val debug: Boolean = false
+          //val pro = GCMSOutputFiles2IsocorInput(resolution, separator)
+
+          val lFutures = Future.sequence(files.map(f => readFileAsText(f) ))
+
+          lFutures.onComplete {
+                  case Success(reportGcmsInTextFormat) =>
+
+                    println(reportGcmsInTextFormat)
+
+                   GCMS(
+                      origin = "test",
+                      header = parseHeader(List()),
+                      msQuantitativeResults = parseMSQuantitativeResults(List())
+                  )
+                  case Failure(e) =>
+                    println("failure")
+                }
+        }
+
+    }
+  )
+  dom
+    .document
+    .getElementById("inputFilesDiv")
+    .append(inputTag.render)
+}
+}
