@@ -56,10 +56,9 @@ lazy val root = (project in file(".")).
     coverageFailOnMinimum := false,
     coverageHighlighting := true,
     libraryDependencies ++= Seq(
-      "com.github.p2m2" %% "p2m2tools" % "0.2.O",
       "com.lihaoyi" %%% "utest" % "0.8.1" % Test,
       "com.lihaoyi" %%% "scalatags" % "0.12.0",
-      "com.lihaoyi" %% "upickle" % "3.0.0"
+      "com.lihaoyi" %%% "upickle" % "3.0.0",
     ),
     testFrameworks += new TestFramework("utest.runner.Framework"),
     assembly / target := file("assembly"),
