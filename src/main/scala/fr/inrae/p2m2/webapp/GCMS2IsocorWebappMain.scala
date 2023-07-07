@@ -37,14 +37,6 @@ object GCMS2IsocorWebappMain {
   }
 
 def main(args: Array[String]): Unit = {
-/*
-  window.onerror = (messageOrEvent : Event, source : String, lineno : Int, colno: Int, error : Any) => {
-    val obj = dom
-      .document
-      .getElementById("my_console")
-    alert(error.toString)
-    //obj.innerText = obj.innerText  + errorMsg +"\r\n"
-  }*/
 
   val inputTag: JsDom.TypedTag[Input] = input(
     id := "inputFiles",
@@ -94,7 +86,7 @@ def main(args: Array[String]): Unit = {
                         }
                     }.flatten
                     a(
-                      "IsoCor file", href := "data:text/tsv;name=isocor_gcms.tsv;charset=UTF-8,"
+                      "IsoCor file", href := "data:text/tsv;name=isocor_gcms.tsv;charset=ISO-8859-1,"
                         + encodeURIComponent(header+listGCMS.mkString("\n"))).render.click()
 
                   case Failure(e) =>
