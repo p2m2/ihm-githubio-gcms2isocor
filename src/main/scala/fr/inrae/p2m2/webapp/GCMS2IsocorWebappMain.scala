@@ -1,6 +1,5 @@
 package fr.inrae.p2m2.webapp
 
-
 import fr.inrae.p2m2.converter.GCMSOutputFiles2IsocorInput
 import fr.inrae.p2m2.format.GCMS
 import fr.inrae.p2m2.parser.GCMSParser.{parseHeader, parseMSQuantitativeResults}
@@ -12,27 +11,25 @@ import scalatags.JsDom
 import scalatags.JsDom.all._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future.never.onComplete
 import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.scalajs.js.URIUtils.encodeURIComponent
 import scala.util.{Failure, Success}
-
 object GCMS2IsocorWebappMain {
-
 
   def readFileAsText (file : dom.File) (implicit ec: ExecutionContext) : Future[String] = {
     val p = Promise[String]()
       val fr = new FileReader()
 
     fr.onload = _ => {
-        p.success(fr.result.toString)
+      p.success(fr.result.toString)
+
     }
 
       fr.onerror = _ => {
         p.failure(new Exception())
       }
 
-    fr.readAsText(file)
+    fr.readAsText(file,"ISO-8859-1")
     p.future
   }
 
@@ -67,6 +64,7 @@ def main(args: Array[String]): Unit = {
 
                     val listGCMS : List [String] = reportsGcmsInTextFormat.flatMap {
                       case fileContent =>
+                        println(fileContent)
                         val textByLine : List[String] = fileContent.split("\n")
                           .toList
                           .map(_.trim)
