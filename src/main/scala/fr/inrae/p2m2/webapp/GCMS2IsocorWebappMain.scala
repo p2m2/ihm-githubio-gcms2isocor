@@ -71,6 +71,8 @@ def main(args: Array[String]): Unit = {
           lFutures.onComplete {
                   case Success(reportsGcmsInTextFormat : List[String]) =>
                     //println(reportsGcmsInTextFormat)
+                    val header="sample\tmetabolite\tderivative\tisotopologue\tarea\tresolution\n"
+
                     val listGCMS : List [String] = reportsGcmsInTextFormat.flatMap {
                       case fileContent =>
                         val textByLine : List[String] = fileContent.split("\n")
@@ -93,10 +95,10 @@ def main(args: Array[String]): Unit = {
                     }.flatten
                     a(
                       "IsoCor file", href := "data:text/tsv;name=isocor_gcms.tsv;charset=UTF-8,"
-                        + encodeURIComponent(listGCMS.mkString("\n"))).render.click()
+                        + encodeURIComponent(header+listGCMS.mkString("\n"))).render.click()
 
                   case Failure(e) =>
-                    System.err.println("failure :"+e.getMessage())
+                    System.err.println("failure :"+e.getMessage)
                 }
         }
 
