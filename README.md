@@ -1,10 +1,13 @@
+# Corrective method dedicated to Isocor for calculating carbon isotopologue distribution from GCMS runs
+
+[![web](https://img.shields.io/badge/Web-Online-blue.svg)](https://p2m2.github.io/ihm-githubio-gcms2isocor/)
+[![doi](https://img.shields.io/badge/doi.org/10.3389/fpls.2022.885051-blue.svg)](https://doi.org/10.3389/fpls.2022.885051)
+
 ### command line
 
-#### run tests
+simple interface "Corrective method dedicated to Isocor for calculating carbon isotopologue distribution from GCMS runs"
 
-```shell
-sbt test
-```
+https://p2m2.github.io/ihm-githubio-gcms2isocor
 
 ### Html
 
